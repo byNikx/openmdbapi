@@ -18,6 +18,7 @@ if (process.env.NODE_ENV !== 'production') {
   })
 }
 
+
 const config = {
   all: {
     env: process.env.NODE_ENV || 'development',
@@ -29,11 +30,17 @@ const config = {
     sendgridKey: requireProcessEnv('SENDGRID_KEY'),
     masterKey: requireProcessEnv('MASTER_KEY'),
     jwtSecret: requireProcessEnv('JWT_SECRET'),
+    tmdbApi: {
+      key: requireProcessEnv('TMDB_API_KEY'),
+      host: requireProcessEnv('TMDB_API_HOST'),
+      version: requireProcessEnv('TMDB_API_VERSION'),
+      protocol: requireProcessEnv('TMDB_API_PROTOCOL')
+    },
     mongo: {
       options: {
         db: {
           safe: true
-        }
+        } 
       }
     }
   },

@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { middleware as query } from 'querymen'
 import { index } from './controller'
+export PopularMovie, { schema } from './model'
 
 const router = new Router()
 
@@ -9,7 +10,8 @@ const router = new Router()
  * @apiName RetrievePopularMovies
  * @apiGroup PopularMovie
  * @apiUse listParams
- * @apiSuccess {Object[]} popularMovies List of popular movies.
+ * @apiSuccess {Number} count Total amount of popular movies.
+ * @apiSuccess {Object[]} rows List of popular movies.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
 router.get('/',

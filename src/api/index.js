@@ -35,3 +35,4 @@ router.use('/password-resets', passwordReset)
 router.use('/movie/popular', popularMovie)
 
 export default router
+ 
