@@ -1,6 +1,8 @@
+import { isJSON } from '../../services/common/common.service';
+
 export const success = (res, status) => (entity) => {
   if (entity) {
-    res.status(status || 200).json(entity)
+    res.status(status || 200).json(JSON.parse(entity));
   }
   return null
 }

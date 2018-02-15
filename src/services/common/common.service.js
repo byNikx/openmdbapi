@@ -1,34 +1,58 @@
-export let getRequest = ()=>{
-	let req = http.request(options, function (res) {
-			  let chunks = [];
+import { env, tmdbApi } from '../../config';
+import http from 'http';
 
-			  res.on("data", function (chunk) {
-			    chunks.push(chunk);
-			  });
+export const getRequest = (options)=>{
+//    console.log("getRequest", getRequest);
+	return new Promise((resolve, reject) => {
 
-			  res.on("end", function () {
+		let req = http.request(options, function (res) {
+//			console.log("options", options);
 
-			    let body = Buffer.concat(chunks);
-			    if(tmdb.isJSON(body)){
-			    	if(!!body.status_code){
-			    	//if(body.status_code && body.status_code == 34){
-			    		console.log('Not found', body);
-			    	}else{
-				    	tmdb.buffer.forUpdate.push(JSON.parse(body.toString()));
-			            tmdb.buffer.fetched.push(item._id);
-			    	}
-			    }
-			    resolve();
+		  let chunks = [];
+//console.log("chunks1", chunks);
+		  res.on("data", function (chunk) {
+		    chunks.push(chunk);
 
-			  });
+//console.log("chunks", chunks);
+		  });
 
-			});
+	  	  res.on("end", function () {
+		    let body = Buffer.concat(chunks);
+		    resolve(body.toString());
+//		    console.log("body.toString()", body.toString());
+//		    req.end();
+		  });
 
-			req.on('error', function (error){
-				console.log('failed');
-			  	reject();
-		    });
+		});
 
-			req.write("{}");
-			req.end();
+		req.on('error', function (error){
+			console.log('failed');
+		  	reject(error);
+//		  	req.end();
+	    });
+//	    req.write("{}");
+		req.end();
+	});
 }
+
+export const apiPath = (path, parameters = {})=>{
+	const apiPath = Object.keys(parameters).reduce((querystring, key, index)=>{
+		if(index==0) querystring+='?';
+
+		if(!!parameters[key]) 
+			querystring+=`${key}=${parameters[key]}&`;
+
+		return querystring;
+	}, path);
+
+	return apiPath.substr(0, apiPath.length-1);
+}
+
+export const isJSON = (str) =>{
+		try{
+			JSON.parse(str);
+		}catch(e){
+			return false;
+		}
+		return true;
+	}
