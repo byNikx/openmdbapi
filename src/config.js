@@ -35,7 +35,7 @@ const config = {
       host: requireProcessEnv('TMDB_API_HOST'),
       version: requireProcessEnv('TMDB_API_VERSION'),
       protocol: requireProcessEnv('TMDB_API_PROTOCOL')
-    },
+    }, 
     mongo: {
       options: {
         db: {

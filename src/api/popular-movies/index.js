@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { middleware as query } from 'querymen'
-import { index } from './controller'
+import { index, indexRemote } from './controller'
 export PopularMovie, { schema } from './model'
 
 const router = new Router()
@@ -15,7 +15,7 @@ const router = new Router()
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
 router.get('/',
-  query(),
-  index)
+//  query(),
+  indexRemote)
 
 export default router

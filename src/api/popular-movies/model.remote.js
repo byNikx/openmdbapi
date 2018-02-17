@@ -1,6 +1,6 @@
 import { env, tmdbApi } from '../../config';
 import { apiPath, getRequest } from '../../services/common/common.service';
-
+ 
 export default function(query){
 	const queryParams = Object.assign({
 			api_key: tmdbApi.key, 
@@ -14,7 +14,6 @@ export default function(query){
 		hostname: tmdbApi.host,
 		path: apiPath(`/${tmdbApi.version}/movie/popular`, queryParams)
 	};
-	console.log("options", options);
 	return getRequest(options);
 
 }

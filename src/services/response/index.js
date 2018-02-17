@@ -2,7 +2,13 @@ import { isJSON } from '../../services/common/common.service';
 
 export const success = (res, status) => (entity) => {
   if (entity) {
-    res.status(status || 200).json(JSON.parse(entity));
+    res.status(status || entity.statusCode || 200);
+    if(entity.data){
+      res.json(JSON.parse(entity.data));
+    }else{
+      res.json(entity);
+    }
+    
   }
   return null
 }

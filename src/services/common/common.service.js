@@ -2,25 +2,19 @@ import { env, tmdbApi } from '../../config';
 import http from 'http';
 
 export const getRequest = (options)=>{
-//    console.log("getRequest", getRequest);
 	return new Promise((resolve, reject) => {
 
 		let req = http.request(options, function (res) {
-//			console.log("options", options);
+			const {statusCode} = res;
 
 		  let chunks = [];
-//console.log("chunks1", chunks);
 		  res.on("data", function (chunk) {
 		    chunks.push(chunk);
-
-//console.log("chunks", chunks);
 		  });
 
 	  	  res.on("end", function () {
 		    let body = Buffer.concat(chunks);
-		    resolve(body.toString());
-//		    console.log("body.toString()", body.toString());
-//		    req.end();
+		    resolve({data:body.toString(), statusCode});
 		  });
 
 		});
@@ -28,12 +22,28 @@ export const getRequest = (options)=>{
 		req.on('error', function (error){
 			console.log('failed');
 		  	reject(error);
-//		  	req.end();
 	    });
-//	    req.write("{}");
 		req.end();
 	});
 }
+
+export const remoteModel = (pathFragment, query) => {
+	const queryParams = Object.assign({
+			api_key: tmdbApi.key, 
+			page: 1, 
+			region: undefined, 
+			language: 'en'
+		}, query);
+
+	const options = {
+		protocol: `${tmdbApi.protocol}:`,
+		hostname: tmdbApi.host,
+		path: apiPath(`/${tmdbApi.version}/${pathFragment}`, queryParams)
+	};
+	return getRequest(options);
+
+};
+
 
 export const apiPath = (path, parameters = {})=>{
 	const apiPath = Object.keys(parameters).reduce((querystring, key, index)=>{
